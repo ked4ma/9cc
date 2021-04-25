@@ -38,6 +38,14 @@ Token *tokenize();
 extern char *user_input;
 extern Token *token; // current token
 
+typedef struct LVar LVar;
+struct LVar {
+  LVar *next; // next variable or NULL
+  char *name;
+  int len;
+  int offset; // offset from RBP
+};
+
 //
 // parse.c
 //
