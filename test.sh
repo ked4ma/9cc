@@ -28,5 +28,7 @@ assert 10 '- -10;'
 assert 10 '- - +10;'
 assert 1 'a = 1;'
 assert 6 'foo = 1; bar = 2 + 3; foo + bar;'
+assert 5 'return 5;'
+assert 14 'a = 3; b = 5 * 6 - 8; return a+b/2;'
 
 echo OK

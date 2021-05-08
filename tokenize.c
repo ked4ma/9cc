@@ -31,7 +31,7 @@ void error_at(char *loc, char *fmt, ...) {
 // next token is expected symbol -> process token + return false
 // otherwise -> return false
 bool consume(char *op) {
-  if (token->kind != TK_RESERVED ||
+  if ((token->kind != TK_RETURN && token->kind != TK_RESERVED) ||
       strlen(op) != token->len ||
       memcmp(token->str, op, token->len))
     return false;
@@ -99,6 +99,12 @@ Token *tokenize() {
       continue;
     }
 
+    if (strncmp(p, "return", 6) == 0 && !isalnum(p[6])) {
+      cur = new_token(TK_RETURN, cur, p, 6);
+      p += 6;
+      continue;
+    }
+
     if (startswith(p, "==") || startswith(p, "!=") ||
         startswith(p, "<=") || startswith(p, ">=")) {
       cur = new_token(TK_RESERVED, cur, p, 2);
@@ -111,7 +117,8 @@ Token *tokenize() {
       continue;
     }
 
-    if (isalpha(*p)) { char *q = p++;
+    if (isalpha(*p)) {
+      char *q = p++;
       while (isalnum(*p))
         p++;
       cur = new_token(TK_IDENT, cur, q, p - q);
